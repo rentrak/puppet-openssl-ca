@@ -81,6 +81,9 @@ class openssl::private inherits openssl {
 
     # See the O'Reilly SSL text for more details, especially chapter four.
     file {
+      "${cadir}":
+        ensure => directory;
+
       "${cadir}/index.txt":
         require => File["${cadir}"],
         ensure => $ensure;
