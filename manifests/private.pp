@@ -73,11 +73,18 @@ class openssl::private {
   #  *ensure* -- Sets the availability of _all_ certificates for the given ca_name.
   #  *ca_name* -- Sets the CA name, influencing heirarchy and certificate contents.
   class master($ensure, $ca_name) {
+    $rootdir = "${openssl::vardir}/${ca_name}"
+    $ssldir = "${rootdir}/ssl"
+    $cadir = "${ssldir}/ca"
+    $serverdir = "${ssldir}/servers"
+    $clientsdir = "${ssldir}/clients"
+
     # See the O'Reilly SSL text for more details, especially chapter four.
     file {
       "${cadir}/index.txt":
         require => File["${cadir}"],
         ensure => $ensure;
+
       "${cadir}/openssl.cnf":
         ensure => $ensure ? {
           present => file,
