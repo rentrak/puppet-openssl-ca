@@ -72,7 +72,7 @@ class openssl::private inherits openssl {
   # Parameters
   #  *ensure* -- Sets the availability of _all_ certificates for the given ca_name.
   #  *ca_name* -- Sets the CA name, influencing heirarchy and certificate contents.
-  class master($ensure, $ca_name) {
+  class master($ensure, $ca_name) inherits openssl {
     $rootdir = "${openssl::vardir}/${ca_name}"
     $ssldir = "${rootdir}/ssl"
     $cadir = "${ssldir}/ca"
