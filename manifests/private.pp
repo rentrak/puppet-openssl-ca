@@ -1,4 +1,4 @@
-class openssl::private {
+class openssl::private inherits openssl {
   # The main filter resource: scrubs user input, sets several variables for
   # later use lower in the stack and acts as a generic, private API to the outer
   # resources.
@@ -97,14 +97,17 @@ class openssl::private {
     Exec { cwd => $cadir, }
     exec {
       "${ca_name} serial index":
+        path    => "/bin:/sbin:/usr/bin:/usr/sbin",
         command => "echo '01' > ${cadir}/serial",
         require => File["${cadir}/openssl.cnf"],
         creates => "${cadir}/serial";
       "${ca_name} cacert.pem":
+        path    => "/bin:/sbin:/usr/bin:/usr/sbin",
         command => "openssl req -x509 -config openssl.cnf -newkey rsa:2048 -days 365 -out cacert.pem -outform PEM -subj /CN=${ca_name}CA/ -nodes",
         require => Exec["${ca_name} serial index"],
         creates => "${cadir}/cacert.pem";
       "${ca_name} cacert.cer":
+        path    => "/bin:/sbin:/usr/bin:/usr/sbin",
         command => "openssl x509 -in cacert.pem -out cacert.cer -outform DER",
         require => Exec["${ca_name} cacert.pem"],
         creates => "${cadir}/cacert.cer";
