@@ -15,16 +15,17 @@ class openssl::private {
   #  *type* -- Sets the distinction between client/server generation.
   #
   define main($ensure, $ca_name, $ca_host, $type) {
+
+    $rootdir = "${openssl::vardir}/${ca_name}"
+    $ssldir = "${rootdir}/ssl"
+    $cadir = "${ssldir}/ca"
+    $serverdir = "${ssldir}/servers"
+    $clientsdir = "${ssldir}/clients"
+
     case $type {
       certmaster, server, client: {
         case $ensure {
           present, absent: {
-
-            $rootdir = "${openssl::vardir}/${ca_name}"
-            $ssldir = "${rootdir}/ssl"
-            $cadir = "${ssldir}/ca"
-            $serverdir = "${ssldir}/servers"
-            $clientsdir = "${ssldir}/clients"
 
             case $type {
               certmaster: {
